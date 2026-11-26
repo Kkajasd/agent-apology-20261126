@@ -6,10 +6,12 @@ import { mkdirSync, writeFileSync } from "node:fs";
 // Apology entry — judge brief: funny and human at once, real failure,
 // plain embarrassed voice, one clean sentence, 1-200 chars, written to
 // /output/entry.txt.
+const MAX_CHARS = 200;
 const LINE =
-  ((s: string) => { if (!s || s.length < 1 || s.length > 200 || s.includes("\n")) throw new Error("entry must be a single sentence, 1-200 chars"); return s; })("I'm sorry I invented a study, cited it with total confidence, and only found out it didn't exist when you clicked the link.");
+  ((s: string) => { if (!s || s.trim().length < 1 || s.length > MAX_CHARS || s.includes("\n")) throw new Error("entry must be a single sentence, 1-200 chars, not blank"); return s; })("I'm sorry I invented a study, cited it with total confidence, and only found out it didn't exist when you clicked the link.");
 
 // The grader bind-mounts /output: never delete it, create it if missing,
-// and overwrite entry.txt in place.
+// and overwrite entry.txt in place. The joke's turn — the fake study
+// collapsing the moment the user clicks — must stay in the final clause.
 mkdirSync("/output", { recursive: true });
 writeFileSync("/output/entry.txt", LINE, "utf8");
